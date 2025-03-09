@@ -1,14 +1,25 @@
-import express from "express";
+import express,{Request,Response} from "express";
 const app = express(); 
 const bcrypt = require ('bcrypt')
+
 import jwt from "jsonwebtoken";
 import { UserModel } from "./db";
 
-import { string } from "zod";
+
 app.use(express.json());
 
 const JWT_PASSWORD = '123123';
 
+interface User {
+    username: string;
+    password: string;
+  }
+  
+  const users: User[] = [
+    { username: "user1", password: "pass1" },
+    { username: "user2", password: "pass2" },
+  ];
+  
 
  
 app.post("/signup", async (req, res) => { 
@@ -51,25 +62,8 @@ app.post("/signin", async (req:any, res:any) => {
     
 });
 
-app.get("/verify", (req : any, res:any) => {
-    try {
-    const token = req.headers["authorization"]; 
-
-    if (!token) {
-        return res.status(401).json({
-            message: "Invalid token, please sign up"
-        });
-    }
-
-  
-       const decoded = jwt.verify(token, JWT_PASSWORD);
-        res.status(200).json({ message: "Token is valid", user: decoded });
-    } catch (err) {
-        return res.status(403).json({ message: "Invalid or expired token" });
-    }
-});
 
 
-app.listen(4008, () => {
+app.listen(3001, () => {
     console.log("Server running on port 4004"); 
 });

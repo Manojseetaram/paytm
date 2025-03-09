@@ -19,6 +19,10 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_1 = require("./db");
 app.use(express_1.default.json());
 const JWT_PASSWORD = '123123';
+const users = [
+    { username: "user1", password: "pass1" },
+    { username: "user2", password: "pass2" },
+];
 app.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;
@@ -57,21 +61,6 @@ app.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 }));
-app.get("/verify", (req, res) => {
-    const token = req.headers["authorization"];
-    if (token) {
-        return res.status(401).json({
-            message: "Invalid token, please sign up"
-        });
-    }
-    try {
-        const decoded = jsonwebtoken_1.default.verify(token, JWT_PASSWORD);
-        res.status(200).json({ message: "Token is valid", user: decoded });
-    }
-    catch (err) {
-        return res.status(403).json({ message: "Invalid or expired token" });
-    }
-});
-app.listen(4008, () => {
+app.listen(3001, () => {
     console.log("Server running on port 4004");
 });
